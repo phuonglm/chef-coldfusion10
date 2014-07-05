@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: coldfusion10
+# Cookbook Name:: coldfusion11
 # Providers:: cluster
 #
 # Copyright 2012, Nathan Mische
@@ -18,16 +18,16 @@
 #
 
 include Chef::Mixin::Checksum
-include CF10Entmanager
-include CF10Providers
-include CF10Passwords
+include CF11Entmanager
+include CF11Providers
+include CF11Passwords
 
 def initialize(*args)
   super
    
   instance_data = get_instance_data("cfusion", node) 
   @api_url = "http://localhost:#{instance_data['http_port']}/CFIDE/administrator/configmanager/api/entmanager.cfm"
-  install_configmanager("#{instance_data['dir']}/wwwroot/CFIDE", node['cf10']['installer']['runtimeuser'])
+  install_configmanager("#{instance_data['dir']}/wwwroot/CFIDE", node['cf11']['installer']['runtimeuser'])
 
 end
 
@@ -61,6 +61,6 @@ def make_entmanager_api_call( action, params )
 
   pwds = get_passwords(node)
   msg = { "action" => action, "params" => params }
-  make_api_call( msg, @api_url, "#{node['cf10']['installer']['install_folder']}/config/*.xml", pwds['admin_password'] )
+  make_api_call( msg, @api_url, "#{node['cf11']['installer']['install_folder']}/config/*.xml", pwds['admin_password'] )
 
 end

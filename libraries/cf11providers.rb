@@ -1,6 +1,6 @@
 #
-# Cookbook Name:: coldfusion10
-# Library:: cf10providers
+# Cookbook Name:: coldfusion11
+# Library:: cf11providers
 #
 # Copyright 2013, Nathan Mische
 #
@@ -17,7 +17,7 @@
 # limitations under the License.
 
 
-module CF10Providers 
+module CF11Providers 
 
   include Chef::Mixin::Checksum
   
@@ -35,7 +35,7 @@ module CF10Providers
       
       cf = cookbook_file "#{Chef::Config['file_cache_path']}/configmanager.zip" do
         source "configmanager.zip"
-        cookbook "coldfusion10"
+        cookbook "coldfusion11"
         action :nothing
         mode "0744"
         owner "root"

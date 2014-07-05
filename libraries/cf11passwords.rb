@@ -1,6 +1,6 @@
 #
-# Cookbook Name:: coldfusion10
-# Library:: cf10passwords
+# Cookbook Name:: coldfusion11
+# Library:: cf11passwords
 #
 # Copyright 2013, Nathan Mische
 #
@@ -17,7 +17,7 @@
 # limitations under the License.
 
 
-module CF10Passwords 
+module CF11Passwords 
 
   def get_passwords(node)
 
@@ -28,15 +28,15 @@ module CF10Passwords
     begin
       if Chef::Config[:solo]
       begin 
-        password_databag = Chef::DataBagItem.load("cf10",node['cf10']['installer']['password_databag'])
+        password_databag = Chef::DataBagItem.load("cf11",node['cf11']['installer']['password_databag'])
       rescue
-        Chef::Log.info("No coldfusion10 passwords data bag found")
+        Chef::Log.info("No coldfusion11 passwords data bag found")
       end
     else
       begin 
-        password_databag = Chef::EncryptedDataBagItem.load("cf10",node['cf10']['installer']['password_databag'])
+        password_databag = Chef::EncryptedDataBagItem.load("cf11",node['cf11']['installer']['password_databag'])
       rescue
-        Chef::Log.info("No coldfusion10 passwords encrypted data bag found")
+        Chef::Log.info("No coldfusion11 passwords encrypted data bag found")
       end
     end
 
@@ -50,9 +50,9 @@ module CF10Passwords
 
     ensure 
 
-      passwords["admin_password"] = admin_password || node["cf10"]["installer"]["admin_password"]
-      passwords["jetty_password"] = jetty_password || node["cf10"]["installer"]["jetty_password"]
-      passwords["rds_password"] = rds_password || node["cf10"]["installer"]["rds_password"]
+      passwords["admin_password"] = admin_password || node["cf11"]["installer"]["admin_password"]
+      passwords["jetty_password"] = jetty_password || node["cf11"]["installer"]["jetty_password"]
+      passwords["rds_password"] = rds_password || node["cf11"]["installer"]["rds_password"]
 
     end
 

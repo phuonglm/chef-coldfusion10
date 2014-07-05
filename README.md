@@ -1,24 +1,24 @@
-#chef-coldfusion10 [![Build Status](https://secure.travis-ci.org/wharton/chef-coldfusion10.png?branch=master)](http://travis-ci.org/wharton/chef-coldfusion10)
+#chef-coldfusion11 [![Build Status](https://secure.travis-ci.org/phuonglm/chef-coldfusion11.png?branch=master)](http://travis-ci.org/phuonglm/chef-coldfusion11)
 
 Description
 ===========
 
-Installs/Configures Adobe ColdFusion 10
+Installs/Configures Adobe ColdFusion 11
 
 Recipes
 =======
 
-* `coldfusion10` - Includes the standalone, jvmconfig, and updates recipes if the installer type is standalone (the default), or the j2ee recipe if installer type is ear or war
-* `coldfusion10::apache` - Configures ColdFusion to run behind the Apache httpd web server
-* `coldfusion10::configure` - Sets ColdFusion configuration settings via the config LWRP (cfusion instance only)
-* `coldfusion10::install` - Runs the ColdFusion installer
-* `coldfusion10::j2ee` - Includes the install recipe and explodes the ear if installer type is ear
-* `coldfusion10::jvmconfig` - Sets necessary JVM configuration (cfusion instance only)
-* `coldfusion10::lockdown` - Locks down CFIDE and other ColdFusion pieces in web server configuration
-* `coldfusion10::standalone` - Installs ColdFusion 10 in standalone mode
-* `coldfusion10::tomcat` - Enables SSL and changes webroot for built in Tomcat webserver (cfusion instance only)
-* `coldfusion10::trustedcerts` - Imports certificates from a data bag into the JVM truststore
-* `coldfusion10::updates` - Applies ColdFusion updates to all local instances
+* `coldfusion11` - Includes the standalone, jvmconfig, and updates recipes if the installer type is standalone (the default), or the j2ee recipe if installer type is ear or war
+* `coldfusion11::apache` - Configures ColdFusion to run behind the Apache httpd web server
+* `coldfusion11::configure` - Sets ColdFusion configuration settings via the config LWRP (cfusion instance only)
+* `coldfusion11::install` - Runs the ColdFusion installer
+* `coldfusion11::j2ee` - Includes the install recipe and explodes the ear if installer type is ear
+* `coldfusion11::jvmconfig` - Sets necessary JVM configuration (cfusion instance only)
+* `coldfusion11::lockdown` - Locks down CFIDE and other ColdFusion pieces in web server configuration
+* `coldfusion11::standalone` - Installs ColdFusion 11 in standalone mode
+* `coldfusion11::tomcat` - Enables SSL and changes webroot for built in Tomcat webserver (cfusion instance only)
+* `coldfusion11::trustedcerts` - Imports certificates from a data bag into the JVM truststore
+* `coldfusion11::updates` - Applies ColdFusion updates to all local instances
 
 Requirements
 ============
@@ -26,14 +26,14 @@ Requirements
 Files
 -----
 
-Unless you have the ColdFusion 10 installer available on a private network that the target node can access, you must download the necessary installer from Adobe. For more information see the `node['cf10']['installer']['url']` and `node['cf10']['installer']['cookbook_file']`, and `node['cf10']['installer']['local_file']` attributes below.
+Unless you have the ColdFusion 11 installer available on a private network that the target node can access, you must download the necessary installer from Adobe. For more information see the `node['cf11']['installer']['url']` and `node['cf11']['installer']['cookbook_file']`, and `node['cf11']['installer']['local_file']` attributes below.
 
 Cookbooks
 ---------
 
-* `apt` - The apt cookbook is required by the coldfusion10::default recipe if the platform is Ubuntu <= 10.04.
-* `apache2` - The apache2 cookbook is required if using the colfusion10::apache recipe.
-* `sudo` - The sudo cookbook is required if using the colfusion10::updates recipe.
+* `apt` - The apt cookbook is required by the coldfusion11::default recipe if the platform is Ubuntu <= 10.04.
+* `apache2` - The apache2 cookbook is required if using the coldfusion11::apache recipe.
+* `sudo` - The sudo cookbook is required if using the coldfusion11::updates recipe.
 
 Resources/Providers
 ===================
@@ -97,7 +97,7 @@ Config
 
 The config resource can be used to set ColdFusion administrator settings. This resource supports two actions. The `:bulk_set` action allows multiple settings to be changed at once. For example, adding the following to a recipe will ensure the trusted cache is enabled and that a mapping exits:
 
-    coldfusion10_config "bulk" do
+    coldfusion11_config "bulk" do
       action :bulk_set
       config ({ "runtime" => {
                   "cacheProperty" => [
@@ -107,8 +107,8 @@ The config resource can be used to set ColdFusion administrator settings. This r
                 }, 
                 "extensions" => {
                   "mapping" => [
-                     { "mapName" => "/cf10", 
-                       "mapPath" => "/opt/coldfusion10" }
+                     { "mapName" => "/cf11", 
+                       "mapPath" => "/opt/coldfusion11" }
                   ]
                 } })
       notifies :restart, "service[coldfusion]", :delayed
@@ -116,7 +116,7 @@ The config resource can be used to set ColdFusion administrator settings. This r
 
 The config resouce also has a `:set` action that can target a ColdFusion administrator API componet directly. For example to create a MS Sql Server datasouce you can do the following: 
 
-    coldfusion10_config "datasource" do
+    coldfusion11_config "datasource" do
       action :set
       property "MSSQL"
       args ({ "name" => "test_db",
@@ -178,7 +178,7 @@ Instance
   </tr>
   <tr>
     <td><b>server_dir</b></td>
-    <td>The server dirctory to use if action is :add_server. This value must be node['cf10']['installer']['install_folder'] + server_name (<em>Do not set this attribute</em>)</td>
+    <td>The server dirctory to use if action is :add_server. This value must be node['cf11']['installer']['install_folder'] + server_name (<em>Do not set this attribute</em>)</td>
     <td></td>
   </tr>
   <tr>
@@ -230,7 +230,7 @@ Instance
 
 The instance resource can be used to create new local or remote instances. For example, the following will create a new local instance and configure it as a service:
 
-    coldfusion10_instance "cfusion2" do
+    coldfusion11_instance "cfusion2" do
       create_service true
     end
 
@@ -283,7 +283,7 @@ Cluster
 
 The cluster resource can be used to create new clusters.
 
-    coldfusion10_cluster "testCluster" do
+    coldfusion11_cluster "testCluster" do
         servers "cfusion,cfusion2"
     end
 
@@ -295,13 +295,13 @@ Attributes
 For ColdFusion Installation
 ---------------------------
 
-The following attributes are under `node['cf10']['installer']`:
+The following attributes are under `node['cf11']['installer']`:
 
 You _must_ set _one_ of the following values for the installer binary: 
 
 * `['url']` - If defined, the installer will be downloaded from this location. (no default)
-* `['cookbook_file']` - If defined, a cookbook file with this name, i.e. "ColdFusion\_10\_WWEJ\_linux32.bin", must be available in this cookbook's `files/default` directory. You must download the installer from adobe.com and place it in this directory. (no default)
-* `['local_file']` - If defined, the the installer binary must be available on the the chef node at this path, i.e. "/tmp/ColdFusion\_10\_WWEJ\_linux32.bin". This can be useful if you have some way to distribute the installer to chef nodes before provisioning. For example you may keep a single copy of the installer on your Vagrant host workstation and make it availble to all you Vagrant guests via a shared folder. (no default)
+* `['cookbook_file']` - If defined, a cookbook file with this name, i.e. "ColdFusion\_11\_WWEJ\_linux32.bin", must be available in this cookbook's `files/default` directory. You must download the installer from adobe.com and place it in this directory. (no default)
+* `['local_file']` - If defined, the the installer binary must be available on the the chef node at this path, i.e. "/tmp/ColdFusion\_11\_WWEJ\_linux32.bin". This can be useful if you have some way to distribute the installer to chef nodes before provisioning. For example you may keep a single copy of the installer on your Vagrant host workstation and make it availble to all you Vagrant guests via a shared folder. (no default)
 
 Additional settings:
 
@@ -313,7 +313,7 @@ Additional settings:
 * `['enable_rds']` - Enable RDS (default: "false")
 * `['enable_secure_profile']` - Enable secure profile, locking down the ColdFusion administrator (default: "false")
 * `['install_admin']` - Install the ColdFusion administrator application (default: "true")
-* `['install_folder']` - ColdFusion installation path (default: "/opt/coldfusion10")
+* `['install_folder']` - ColdFusion installation path (default: "/opt/coldfusion11")
 * `['install_jnbridge']` - Install the .Net integration services, applies only to Windows systems with .Net framework installed (default: "false")
 * `['install_odbc']` - ODBC services (default: "true")
 * `['install_samples']` - ColdFusion samples, the Getting Started Experience, Tutorials, and Documentation (default: "false")
@@ -333,14 +333,14 @@ Additional settings:
 For Web Server
 --------------
 
-The following attributes are under `node['cf10']`:
+The following attributes are under `node['cf11']`:
 
 * `['webroot']` - The document root to use for either Apache or Tomcat (default: "/vagrant/wwwroot") 
 
 For Locking Down Web Server
 ---------------------------
 
-The following attributes are under `node['cf10']['lockdown']`:
+The following attributes are under `node['cf11']['lockdown']`:
 
 * `['cfide']['adminapi_whitelist']` - An array of hosts/IP addresses beyond localhost/127.0.0.1 to grant adminapi access.
 * `['cfide']['administrator_whitelist']` - An array of hosts/IP addresses beyond localhost/127.0.0.1 to grant administrator access.
@@ -357,7 +357,7 @@ The following attributes are under `node['cf10']['lockdown']`:
 
 For Java
 --------
-The following attributes are under `node['cf10']['java']`:
+The following attributes are under `node['cf11']['java']`:
 
 * `['args']` - An array of arguments to be passed o the ColdFusion JVM. (default: [ "-Xms256m", "-Xmx512m", "-XX:MaxPermSize=192m", "-XX:+UseParallelGC" ])
 * `['home']` - Defaults to the JRE bundled with ColdFusion, updated to system JAVA_HOME if the Java cookbook is used. 
@@ -365,11 +365,11 @@ The following attributes are under `node['cf10']['java']`:
 For Configuration
 -----------------
 
-The following attributes are under `node['cf10']`:
+The following attributes are under `node['cf11']`:
 
 * `['config_settings']` - Settings to apply to the ColdFusion server (default: {})
 
-ColdFusion configuration for this cookbook is handled by a LWRP wrapping the [ColdFusion Configuration Manager project](https://github.com/nmische/cf-configmanager). To set ColdFusion admin settings via this cookbook set the config_settings as necessary and include the coldfusion10::configure recipe in your run list. Below is a sample
+ColdFusion configuration for this cookbook is handled by a LWRP wrapping the [ColdFusion Configuration Manager project](https://github.com/nmische/cf-configmanager). To set ColdFusion admin settings via this cookbook set the config_settings as necessary and include the coldfusion11::configure recipe in your run list. Below is a sample
 JSON datasource definition:
 
     "config_settings" => {
@@ -392,10 +392,10 @@ JSON datasource definition:
 For Updates
 -----------
 
-The following attributes are under `node['cf10']['updates']`:
+The following attributes are under `node['cf11']['updates']`:
 
 * `['urls']` - A list of update URLs to download and install. (default: `%w{ 
-  http://download.macromedia.com/pub/coldfusion/10/cf10_mdt_updt.jar 
+  http://download.macromedia.com/pub/coldfusion/10/cf11_mdt_updt.jar 
   http://download.adobe.com/pub/adobe/coldfusion/hotfix_001.jar
   http://download.adobe.com/pub/adobe/coldfusion/hotfix_002.jar
   http://download.adobe.com/pub/adobe/coldfusion/hotfix_004.jar
@@ -407,7 +407,7 @@ The following attributes are under `node['cf10']['updates']`:
   http://download.adobe.com/pub/adobe/coldfusion/hotfix_010.jar
   http://download.adobe.com/pub/adobe/coldfusion/hotfix_011.jar
 }`)
-* `['files']` - A list of files deployed by the update installers. There should be one entry for each update url defined in `node['cf10']['updates']['urls']`. (default: `%w{ 
+* `['files']` - A list of files deployed by the update installers. There should be one entry for each update url defined in `node['cf11']['updates']['urls']`. (default: `%w{ 
   hf1000-3332326.jar
   chf10000001.jar
   chf10000002.jar
@@ -424,7 +424,7 @@ The following attributes are under `node['cf10']['updates']`:
 For Apache
 ----------
 
-The following attributes are under `node['cf10']['apache']`:
+The following attributes are under `node['cf11']['apache']`:
 
 * `['ssl_cert_file']` - The SSL cert to use for Apache (default: "/etc/ssl/certs/ssl-cert-snakeoil.pem")
 * `['ssl_cert_key_file']` - The SSL key to use for Apache (default: "/etc/ssl/private/ssl-cert-snakeoil.key")
@@ -435,32 +435,32 @@ For Chef Search
 
 The following attributes are set during a Chef run and can be used to query your coldfusion infrastructure:
 
-*`node['cf10']['instances_xml']` - The contents of the instances.xml file
-*`node['cf10']['instances_local']` - A comma delimited list of local instances
-*`node['cf10']['instances_remote']` - A comma delimited list of remote instances
-*`node['cf10']['cluster_xml']` - The contents of the cluster.xml file
+*`node['cf11']['instances_xml']` - The contents of the instances.xml file
+*`node['cf11']['instances_local']` - A comma delimited list of local instances
+*`node['cf11']['instances_remote']` - A comma delimited list of remote instances
+*`node['cf11']['cluster_xml']` - The contents of the cluster.xml file
 
 Usage
 =====
 
 On server nodes:
 
-    include_recipe "coldfusion10"
+    include_recipe "coldfusion11"
 
-This will run either a standalone or J2EE installation depending on the `node['cf10']['installer']['installer_type']`.
+This will run either a standalone or J2EE installation depending on the `node['cf11']['installer']['installer_type']`.
 
-The standalone installation type will run the following recipes `coldfusion10::standalone`, `coldfusion10::jvmconfig`, and 
-`coldfusion10::updates` recipes, installing ColdFusion 10 standalone server mode.
+The standalone installation type will run the following recipes `coldfusion11::standalone`, `coldfusion11::jvmconfig`, and 
+`coldfusion11::updates` recipes, installing ColdFusion 11 standalone server mode.
 
-The J2EE installation type will run the `coldfusion10::j2ee` recipe.
+The J2EE installation type will run the `coldfusion11::j2ee` recipe.
 
 Securely Storing Passwords
 --------------------------
 
-If you'd like to securely store the CF10 passwords for installation, you can create an encrypted data bag at `cf10/#{node['cf10']['installer']['password_databag']}` which defaults to `cf10/installer_passwords`. For example:
+If you'd like to securely store the CF11 passwords for installation, you can create an encrypted data bag at `cf11/#{node['cf11']['installer']['password_databag']}` which defaults to `cf11/installer_passwords`. For example:
 
-    $ knife data bag create cf10
-    $ knife data bag create cf10 installer_passwords --secret-file=path/to/secret
+    $ knife data bag create cf11
+    $ knife data bag create cf11 installer_passwords --secret-file=path/to/secret
 
 _in your editor type:_
 
@@ -482,7 +482,7 @@ Configuration also:
 * Presents 404 error instead of 5XX for ColdFusion application.cfc access
 * Optionally alias /CFIDE/scripts (Server Settings -> Settings -> Default ScriptsSrc Directory)
 
-Below are the explanations for additional ColdFusion pieces that can be blocked. ColdFusion 10 server lockdown documentation can be found here: http://www.adobe.com/content/dam/Adobe/en/products/coldfusion/pdfs/cf10/cf10-lockdown-guide.pdf
+Below are the explanations for additional ColdFusion pieces that can be blocked. ColdFusion 11 server lockdown documentation can be found here: http://www.adobe.com/content/dam/Adobe/en/products/coldfusion/pdfs/cf11/cf11-lockdown-guide.pdf
 
 URI | Purpose | Safe to Block
 ----|---------|--------------
@@ -495,7 +495,7 @@ URI | Purpose | Safe to Block
 /CFIDE/scripts | Contains javascript and other assets for several ColdFusion features cfform, cfchart, ajax tags, etc. | Yes - we will create a new, non default URI for this folder, and specify the new URI in the ColdFusion administrator.
 /flex2gateway | Flex Remoting | Only if Flex Remoting is not used.
 /flex-internal | Flex Remoting | Only if Flex Remoting is not used.
-/rest | Used for CF10 Rest web services support. | Only if CF10 REST web services are not used.
+/rest | Used for CF11 Rest web services support. | Only if CF11 REST web services are not used.
 /WSRPProducer | Web Services Endpoint for WSRP. | Usually, unless WSRP is used.
 
 For Trusted Certificates

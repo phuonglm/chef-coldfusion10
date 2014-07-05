@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: coldfusion10
+# Cookbook Name:: coldfusion11
 # Recipe:: jvmconfig
 #
 # Copyright 2011, Nathan Mische
@@ -26,17 +26,17 @@ else
 end
 
 if has_java && node['java']['install_flavor'] == "oracle" 
-  node.set['cf10']['java']['home'] = node['java']['java_home']
+  node.set['cf11']['java']['home'] = node['java']['java_home']
 end
-unless node['cf10']['java']['home']
-  node.set['cf10']['java']['home'] = node['cf10']['installer']['install_folder'] 
+unless node['cf11']['java']['home']
+  node.set['cf11']['java']['home'] = node['cf11']['installer']['install_folder'] 
 end
 
 # Customize the jvm config
-template "#{node['cf10']['installer']['install_folder']}/cfusion/bin/jvm.config" do
+template "#{node['cf11']['installer']['install_folder']}/cfusion/bin/jvm.config" do
   source "jvm.config.erb"
   mode "0664"
-  owner node['cf10']['installer']['runtimeuser']
+  owner node['cf11']['installer']['runtimeuser']
   notifies :restart, "service[coldfusion]", :delayed
   variables ( { :has_rng_tools => has_rng_tools } )
 end

@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: coldfusion10
+# Cookbook Name:: coldfusion11
 # Resources:: config
 #
 # Copyright 2012, Nathan Mische

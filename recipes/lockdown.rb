@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: coldfusion10
+# Cookbook Name:: coldfusion11
 # Recipe:: lockdown
 #
 # Copyright 2013, Brian Flad
@@ -27,9 +27,9 @@ template "#{node['apache']['dir']}/conf.d/coldfusion-lockdown.conf" do
   notifies :restart, "service[apache2]", :delayed
 end
 
-coldfusion10_config "runtime" do
+coldfusion11_config "runtime" do
   action :set
   property "runtimeProperty"
-  args ( {"propertyName" => "CFFormScriptSrc", "propertyValue" => node['cf10']['lockdown']['cfide']['scripts_alias']} )
-  only_if { node['cf10']['lockdown']['cfide']['scripts_alias'] }
+  args ( {"propertyName" => "CFFormScriptSrc", "propertyValue" => node['cf11']['lockdown']['cfide']['scripts_alias']} )
+  only_if { node['cf11']['lockdown']['cfide']['scripts_alias'] }
 end

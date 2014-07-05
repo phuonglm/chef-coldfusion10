@@ -5,9 +5,9 @@
 
 
 PATH=/usr/xpg4/bin:/bin:/sbin:/usr/bin:/usr/sbin:$PATH
-RUNTIME_USER=<%= node['cf10']['installer']['runtimeuser'] %>
-SOLR="<%= node['cf10']['installer']['install_folder'] %>/cfusion/jetty"
-SOLR_JVM="<%= node['cf10']['installer']['install_folder'] %>/jre"
+RUNTIME_USER=<%= node['cf11']['installer']['runtimeuser'] %>
+SOLR="<%= node['cf11']['installer']['install_folder'] %>/cfusion/jetty"
+SOLR_JVM="<%= node['cf11']['installer']['install_folder'] %>/jre"
 SOLRPORT=8985
 STOPPORT=8077
 NETSTATCMD="netstat"

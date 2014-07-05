@@ -9,11 +9,11 @@
 
 <Location "/CFIDE/adminapi">
   Order Deny,Allow
-  <% if node['cf10']['lockdown']['cfide']['adminapi_whitelist'].length > 0 -%>
+  <% if node['cf11']['lockdown']['cfide']['adminapi_whitelist'].length > 0 -%>
   Deny from all
   Allow from localhost
   Allow from 127.0.0.1
-  <% node['cf10']['lockdown']['cfide']['adminapi_whitelist'].each do |host| %>
+  <% node['cf11']['lockdown']['cfide']['adminapi_whitelist'].each do |host| %>
   Allow from <%= host %>
   <% end %>
   <% else -%>
@@ -24,11 +24,11 @@
 <Location "/CFIDE/administrator">
   SSLRequireSSL
   Order Deny,Allow
-  <% if node['cf10']['lockdown']['cfide']['administrator_whitelist'].length > 0 -%>
+  <% if node['cf11']['lockdown']['cfide']['administrator_whitelist'].length > 0 -%>
   Deny from all
   Allow from localhost
   Allow from 127.0.0.1
-  <% node['cf10']['lockdown']['cfide']['administrator_whitelist'].each do |host| %>
+  <% node['cf11']['lockdown']['cfide']['administrator_whitelist'].each do |host| %>
   Allow from <%= host %>
   <% end %>
   <% else -%>
@@ -36,73 +36,73 @@
   <% end -%>
 </Location>
 
-<% unless node['cf10']['lockdown']['cfide']['air'] -%>
+<% unless node['cf11']['lockdown']['cfide']['air'] -%>
 <Location "/CFIDE/AIR">
   Order Deny,Allow
   Allow from all
 </Location>
 <% end -%>
 
-<% unless node['cf10']['lockdown']['cfide']['classes'] -%>
+<% unless node['cf11']['lockdown']['cfide']['classes'] -%>
 <Location "/CFIDE/classes">
   Order Deny,Allow
   Allow from all
 </Location>
 <% end -%>
 
-<% unless node['cf10']['lockdown']['cfide']['graphdata'] -%>
+<% unless node['cf11']['lockdown']['cfide']['graphdata'] -%>
 <Location "/CFIDE/GraphData.cfm">
   Order Deny,Allow
   Allow from all
 </Location>
 <% end -%>
 
-<% unless node['cf10']['lockdown']['cfide']['scripts'] || node['cf10']['lockdown']['cfide']['scripts_alias'] -%>
+<% unless node['cf11']['lockdown']['cfide']['scripts'] || node['cf11']['lockdown']['cfide']['scripts_alias'] -%>
 <Location "/CFIDE/scripts">
   Order Deny,Allow
   Allow from all
 </Location>
 <% end -%>
 
-<% if node['cf10']['lockdown']['cfide']['scripts_alias'] -%>
-Alias <%= node['cf10']['lockdown']['cfide']['scripts_alias'] %> <%= node['cf10']['installer']['install_folder'] %>/cfusion/wwwroot/CFIDE/scripts/
+<% if node['cf11']['lockdown']['cfide']['scripts_alias'] -%>
+Alias <%= node['cf11']['lockdown']['cfide']['scripts_alias'] %> <%= node['cf11']['installer']['install_folder'] %>/cfusion/wwwroot/CFIDE/scripts/
 <% end -%>
 
 # Other ColdFusion path lockdown
 
 <Location "/CFFileServlet">
   Order Deny,Allow
-  <%= node['cf10']['lockdown']['cffileservlet'] ? "Deny" : "Allow" -%> from all
+  <%= node['cf11']['lockdown']['cffileservlet'] ? "Deny" : "Allow" -%> from all
 </Location>
 
 <Location "/CFFormGateway">
   Order Deny,Allow
-  <%= node['cf10']['lockdown']['flash_forms'] ? "Deny" : "Allow" -%> from all
+  <%= node['cf11']['lockdown']['flash_forms'] ? "Deny" : "Allow" -%> from all
 </Location>
 
 <Location "/cfform-internal">
   Order Deny,Allow
-  <%= node['cf10']['lockdown']['flash_forms'] ? "Deny" : "Allow" -%> from all
+  <%= node['cf11']['lockdown']['flash_forms'] ? "Deny" : "Allow" -%> from all
 </Location>
 
 <Location "/flex2gateway">
   Order Deny,Allow
-  <%= node['cf10']['lockdown']['flex_remoting'] ? "Deny" : "Allow" -%> from all
+  <%= node['cf11']['lockdown']['flex_remoting'] ? "Deny" : "Allow" -%> from all
 </Location>
 
 <Location "/flex-internal">
   Order Deny,Allow
-  <%= node['cf10']['lockdown']['flex_remoting'] ? "Deny" : "Allow" -%> from all
+  <%= node['cf11']['lockdown']['flex_remoting'] ? "Deny" : "Allow" -%> from all
 </Location>
 
 <Location "/rest">
   Order Deny,Allow
-  <%= node['cf10']['lockdown']['rest'] ? "Deny" : "Allow" -%> from all
+  <%= node['cf11']['lockdown']['rest'] ? "Deny" : "Allow" -%> from all
 </Location>
 
 <Location "/WSRPProducer">
   Order Deny,Allow
-  <%= node['cf10']['lockdown']['wsrpproducer'] ? "Deny" : "Allow" -%> from all
+  <%= node['cf11']['lockdown']['wsrpproducer'] ? "Deny" : "Allow" -%> from all
 </Location>
 
 # Prevent ColdFusion 5XX errors
