@@ -31,34 +31,9 @@ end
 # Make sure CF is running
 execute "start_cf_for_coldfusion11_wsconfig" do
   command "/bin/true"
-  notifies :start, "service[coldfusion]", :delayed
-  notifies :run, "execute[uninstall_wsconfig]", :delayed
-  notifies :run, "execute[install_wsconfig]", :delayed
-  only_if "#{node['cf11']['installer']['install_folder']}/cfusion/runtime/bin/wsconfig -list 2>&1 | grep 'There are no configured web servers'"
-end
-
-# wsconfig 
-execute "install_wsconfig" do
-  case node['platform_family']
-    when "rhel", "fedora", "arch"
-      command <<-COMMAND
-      sleep 11
-      #{node['cf11']['installer']['install_folder']}/cfusion/runtime/bin/wsconfig -ws Apache -dir #{node['apache']['dir']}/conf -bin #{node['apache']['binary']} -script /usr/sbin/apachectl -v
-      cp -f #{node['apache']['dir']}/conf/httpd.conf.1 #{node['apache']['dir']}/conf/httpd.conf
-      cp -f #{node['apache']['dir']}/conf/mod_jk.conf #{node['apache']['dir']}/conf.d/mod_jk.conf
-      sleep 11
-      COMMAND
-    else
-      command <<-COMMAND
-      sleep 11
-      #{node['cf11']['installer']['install_folder']}/cfusion/runtime/bin/wsconfig -ws Apache -dir #{node['apache']['dir']} -bin #{node['apache']['binary']} -script /usr/sbin/apache2ctl -v
-      cp -f #{node['apache']['dir']}/httpd.conf.1 #{node['apache']['dir']}/httpd.conf 
-      cp -f #{node['apache']['dir']}/mod_jk.conf #{node['apache']['dir']}/conf.d/mod_jk.conf
-      sleep 11
-      COMMAND
-    end
-  action :nothing  
-  notifies :restart, "service[apache2]", :immediately
+  notifies :start, "service[coldfusion]", :immediately
+  notifies :run, "execute[uninstall_wsconfig]", :immediately
+  notifies :run, "execute[install_wsconfig]", :immediately
   only_if "#{node['cf11']['installer']['install_folder']}/cfusion/runtime/bin/wsconfig -list 2>&1 | grep 'There are no configured web servers'"
 end
 
@@ -83,6 +58,31 @@ execute "uninstall_wsconfig" do
     end
   action :nothing  
   notifies :restart, "service[apache2]", :immediately
-  only_if "#{node['cf11']['installer']['install_folder']}/cfusion/runtime/bin/wsconfig -list | grep 'Apache : #{node['apache']['dir']}'"
+  only_if "#{node['cf11']['installer']['install_folder']}/cfusion/runtime/bin/wsconfig -list 2>&1 | grep 'Apache : #{node['apache']['dir']}'"
 end
 
+# wsconfig 
+execute "install_wsconfig" do
+  case node['platform_family']
+    when "rhel", "fedora", "arch"
+      command <<-COMMAND
+      sleep 11
+      #{node['cf11']['installer']['install_folder']}/cfusion/runtime/bin/wsconfig -ws Apache -dir #{node['apache']['dir']}/conf -bin #{node['apache']['binary']} -script /usr/sbin/apachectl -v
+      cp -f #{node['apache']['dir']}/conf/httpd.conf.1 #{node['apache']['dir']}/conf/httpd.conf
+      cp -f #{node['apache']['dir']}/conf/mod_jk.conf #{node['apache']['dir']}/conf.d/mod_jk.conf
+      sleep 11
+      COMMAND
+    else
+      command <<-COMMAND
+      sleep 11
+      #{node['cf11']['installer']['install_folder']}/cfusion/runtime/bin/wsconfig -ws Apache -dir #{node['apache']['dir']} -script /usr/sbin/apache2ctl -v
+      cp -f #{node['apache']['dir']}/httpd.conf.1 #{node['apache']['dir']}/httpd.conf 
+      cp -f #{node['apache']['dir']}/mod_jk.conf #{node['apache']['dir']}/conf.d/mod_jk.conf
+      cat #{node['apache']['dir']}/apache2.conf | egrep "(httpd.conf)|(mod_jk.conf)" || echo 'Include "#{node['apache']['dir']}/mod_jk.conf"' >> #{node['apache']['dir']}/apache2.conf
+      sleep 11
+      COMMAND
+    end
+  action :nothing  
+  notifies :restart, "service[apache2]", :immediately
+  only_if "#{node['cf11']['installer']['install_folder']}/cfusion/runtime/bin/wsconfig -list 2>&1 | grep 'There are no configured web servers'"
+end
